@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
+import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -30,11 +31,8 @@ public class MovieCell extends ListCell<Movie> {
                             ? movie.getDescription()
                             : "No description available"
             );
-            genre.setText(
-                movie.getGenres() != null
-                        ? "Genres: " + movie.getGenres()
-                        : "No genre available"
-            ); // not working yet
+            String genresText = "Genres: " + movie.getGenresAsString();
+            genre.setText(genresText);
 
 
             // color scheme
@@ -52,6 +50,11 @@ public class MovieCell extends ListCell<Movie> {
             layout.setPadding(new Insets(10));
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
+
+            layout.getChildren().clear();
+            layout.getChildren().addAll(title, detail, genre);
+
+
             setGraphic(layout);
 
         }
