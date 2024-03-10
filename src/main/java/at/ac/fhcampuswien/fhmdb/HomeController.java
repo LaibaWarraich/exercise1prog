@@ -63,7 +63,7 @@ public class HomeController implements Initializable {
 
     private void filterMovies() {
         String query = searchField.getText().toLowerCase();
-        String selectedGenre = genreComboBox.getValue() != null ? genreComboBox.getValue().toString() : null;
+        Genre selectedGenre = genreComboBox.getValue() != null ? Genre.valueOf(genreComboBox.getValue().toString()) : null;
 
         Predicate<Movie> titleDescriptionPredicate = movie ->
                 movie.getTitle().toLowerCase().contains(query) ||
@@ -76,6 +76,7 @@ public class HomeController implements Initializable {
                 .filter(titleDescriptionPredicate)
                 .filter(genrePredicate)
                 .collect(Collectors.toList());
+
         observableMovies.setAll(filteredMovies);
     }
 
