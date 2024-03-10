@@ -30,7 +30,7 @@ public class Movie {
 
     public static List<Movie> initializeMovies(){
         List<Movie> movies = new ArrayList<>();
-        // TODO add some dummy data here
+        // TODO add some dummy data here.
 
         movies.add(new Movie("The Dark Knight", "A crime thriller featuring Batman.", "Action, Crime, Drama, Thriller"));
         movies.add(new Movie("Jurassic Park", "Adventure with dinosaurs.", "Adventure, Science Fiction, Thriller"));

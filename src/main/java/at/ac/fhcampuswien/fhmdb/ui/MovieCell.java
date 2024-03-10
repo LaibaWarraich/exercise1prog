@@ -34,7 +34,7 @@ public class MovieCell extends ListCell<Movie> {
                 movie.getGenres() != null
                         ? "Genres: " + movie.getGenres()
                         : "No genre available"
-            );
+            ); // not working yet
 
 
             // color scheme

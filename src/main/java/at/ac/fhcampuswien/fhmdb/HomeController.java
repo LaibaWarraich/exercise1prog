@@ -44,7 +44,7 @@ public class HomeController implements Initializable {
 
 
         // initialize UI stuff
-        movieListView.setItems(observableMovies);   // set data of observable list to list view
+        movieListView.setItems(observableMovies);   // set data of observable list to list view.
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
 
         // TODO add genre filter items with genreComboBox.getItems().addAll(...)
