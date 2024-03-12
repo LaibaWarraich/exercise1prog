@@ -13,10 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -50,7 +47,7 @@ public class HomeController implements Initializable {
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
 
         // TODO add genre filter items with genreComboBox.getItems().addAll(...)
-        List<Genre> genres = Arrays.asList(Genre.values());  // Konvertieren des Genre-Enums in eine Liste
+        List<Genre> genres = new ArrayList<>(Arrays.asList(Genre.values()));  // Konvertieren des Genre-Enums in eine Liste
         genreComboBox.getItems().addAll(genres);
         genreComboBox.setPromptText("Filter by Genre");
 
@@ -61,7 +58,14 @@ public class HomeController implements Initializable {
 
     }
 
+    private void resetMovies() {
+        observableMovies.clear();
+        observableMovies.addAll(allMovies);
+    }
+
     private void filterMovies() {
+        resetMovies();
+
         String query = searchField.getText().toLowerCase();
         Genre selectedGenre = genreComboBox.getValue() != null ? Genre.valueOf(genreComboBox.getValue().toString()) : null;
 
@@ -69,15 +73,22 @@ public class HomeController implements Initializable {
                 movie.getTitle().toLowerCase().contains(query) ||
                         movie.getDescription().toLowerCase().contains(query);
 
-        Predicate<Movie> genrePredicate = movie ->
-                selectedGenre == null || movie.getGenres().contains(selectedGenre);
+       Predicate<Movie> genrePredicate;
+       if (selectedGenre == Genre.ALL) {
+           genrePredicate = movie -> true;
+       } else {
+           genrePredicate = movie ->
+                   selectedGenre == null || movie.getGenres().contains(selectedGenre);
+       }
 
         List<Movie> filteredMovies = allMovies.stream()
                 .filter(titleDescriptionPredicate)
                 .filter(genrePredicate)
                 .collect(Collectors.toList());
 
-        observableMovies.setAll(filteredMovies);
+            observableMovies.setAll(filteredMovies);
+
+
     }
 
         private void sortMovies() {
