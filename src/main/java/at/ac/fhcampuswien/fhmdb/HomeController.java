@@ -1,7 +1,7 @@
 package at.ac.fhcampuswien.fhmdb;
 
-import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -36,6 +36,9 @@ public class HomeController implements Initializable {
     private List<Movie> allMovies = Movie.initializeMovies();
 
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();
+    public void setObservableMovies(ObservableList<Movie> observableMovies) {
+        this.observableMovies = observableMovies;
+    }
 
     public ObservableList<Movie> getObservableMovies() {
         return observableMovies;
@@ -74,7 +77,17 @@ public class HomeController implements Initializable {
         observableMovies.addAll(allMovies); // add dummy data to observable list
 
         if (sortBtn != null) {
-            sortBtn.setOnAction(event -> sortMovies());
+            sortBtn.setOnAction(actionEvent -> {
+                if (sortBtn.getText().equals("Sort (asc)")) {
+                    // sort observableMovies ascending
+                    sortMovies(observableMovies, false);
+                    sortBtn.setText("Sort (desc)");
+                } else {
+                    // sort observableMovies descending
+                    sortMovies(observableMovies, true);
+                    sortBtn.setText("Sort (asc)");
+                }
+            });
         }
 
         List<Genre> genres = new ArrayList<>(Arrays.asList(Genre.values()));
@@ -85,13 +98,6 @@ public class HomeController implements Initializable {
             getSearchAndGenre();
             filterMovies();
         });
-
-        sortBtn.setOnAction(event -> {
-            getSearchAndGenre();
-            sortMovies();
-        });
-
-
     }
 
     private void resetMovies() {
@@ -127,14 +133,8 @@ public class HomeController implements Initializable {
             observableMovies.setAll(filteredMovies);
     }
 
-    public void sortMovies() {
-        Comparator<Movie> titleComparator = Comparator.comparing(Movie::getTitle);
-        if (sortBtn.getText().equals("Sort (asc)")) {
-            observableMovies.sort(titleComparator);
-            sortBtn.setText("Sort (desc)");
-        } else {
-            observableMovies.sort(titleComparator.reversed());
-            sortBtn.setText("Sort (asc)");
-        }
+    public void sortMovies(List<Movie> movies, boolean descending) {
+        if (descending) movies.sort(Comparator.reverseOrder());
+        else Collections.sort(movies);
     }
 }
