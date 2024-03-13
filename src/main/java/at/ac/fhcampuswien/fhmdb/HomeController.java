@@ -35,7 +35,7 @@ public class HomeController implements Initializable {
 
     private List<Movie> allMovies = Movie.initializeMovies();
 
-    private final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();
+    public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();
 
     public ObservableList<Movie> getObservableMovies() {
         return observableMovies;
@@ -64,12 +64,18 @@ public class HomeController implements Initializable {
     public List<Movie> getAllMovies() {
         return allMovies;
     }
+    //public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         observableMovies.addAll(getAllMovies());
         movieListView.setItems(observableMovies);
         movieListView.setCellFactory(movieListView -> new MovieCell());
+        observableMovies.addAll(allMovies); // add dummy data to observable list
+
+        if (sortBtn != null) {
+            sortBtn.setOnAction(event -> sortMovies());
+        }
 
         List<Genre> genres = new ArrayList<>(Arrays.asList(Genre.values()));
         genreComboBox.getItems().addAll(genres);
@@ -84,6 +90,8 @@ public class HomeController implements Initializable {
             getSearchAndGenre();
             sortMovies();
         });
+
+
     }
 
     private void resetMovies() {
@@ -116,11 +124,11 @@ public class HomeController implements Initializable {
                 .collect(Collectors.toList());
 
         observableMovies.setAll(filteredMovies);
+            observableMovies.setAll(filteredMovies);
     }
 
-    private void sortMovies() {
+    public void sortMovies() {
         Comparator<Movie> titleComparator = Comparator.comparing(Movie::getTitle);
-
         if (sortBtn.getText().equals("Sort (asc)")) {
             observableMovies.sort(titleComparator);
             sortBtn.setText("Sort (desc)");

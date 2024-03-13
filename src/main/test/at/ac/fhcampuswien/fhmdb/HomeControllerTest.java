@@ -4,7 +4,10 @@ import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -401,4 +404,33 @@ class HomeControllerTest {
             assertTrue(movie.getDescription().contains(query));
         }
     }
+
+    @Test
+    void test_movie_sorting_empty_list() {
+        HomeController homeController = new HomeController();
+        assertThrows(NullPointerException.class, homeController::sortMovies);
+    }
+
+    @Test
+    void test_movie_sorting_null_list() {
+        HomeController homeController = new HomeController();
+        homeController.observableMovies = null;
+        assertThrows(NullPointerException.class, homeController::sortMovies);
+    }
+
+    @Test
+    void test_reverse_sorting_order() {
+        HomeController homeController = new HomeController();
+
+        List<Movie> sortedMovies = Movie.initializeMovies().stream()
+                .sorted(Comparator.comparing(Movie::getTitle).reversed())
+                .collect(Collectors.toList());
+
+        homeController.getObservableMovies().addAll(sortedMovies);;
+
+        List<Movie> sortedMoviesAfterSort = homeController.getObservableMovies();
+        assertEquals(sortedMovies, sortedMoviesAfterSort);
+    }
+
+
 }
