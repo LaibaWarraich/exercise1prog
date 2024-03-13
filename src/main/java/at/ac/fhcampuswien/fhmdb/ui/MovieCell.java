@@ -1,6 +1,5 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
-import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -10,7 +9,9 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-
+/**
+ * Custom ListCell implementation for displaying Movie objects in a ListView.
+ */
 public class MovieCell extends ListCell<Movie> {
     private final Label title = new Label();
     private final Label detail = new Label();
@@ -35,14 +36,13 @@ public class MovieCell extends ListCell<Movie> {
             String genresText = "Genres: " + movie.getGenresAsString();
             genre.setText(genresText);
 
-
-            // color scheme
+            // Color scheme
             title.getStyleClass().add("text-yellow");
             detail.getStyleClass().add("text-white");
             genre.getStyleClass().add("text-white");
             layout.setBackground(new Background(new BackgroundFill(Color.web("#454545"), null, null)));
 
-            // layout
+            // Layout
             title.fontProperty().set(title.getFont().font(20));
             detail.setMaxWidth(this.getScene().getWidth() - 30);
             detail.setWrapText(true);
@@ -55,10 +55,7 @@ public class MovieCell extends ListCell<Movie> {
             layout.getChildren().clear();
             layout.getChildren().addAll(title, detail, genre);
 
-
             setGraphic(layout);
-
         }
     }
 }
-

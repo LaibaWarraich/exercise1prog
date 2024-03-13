@@ -69,47 +69,56 @@ public class HomeController implements Initializable {
     }
     //public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
+    // Initialize method for the HomeController
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Populate the movie list view with initial data
         observableMovies.addAll(getAllMovies());
         movieListView.setItems(observableMovies);
         movieListView.setCellFactory(movieListView -> new MovieCell());
         observableMovies.addAll(allMovies); // add dummy data to observable list
 
+        // Set action for the sort button
         if (sortBtn != null) {
             sortBtn.setOnAction(actionEvent -> {
                 if (sortBtn.getText().equals("Sort (asc)")) {
-                    // sort observableMovies ascending
+                    // Sort movies in ascending order
                     sortMovies(observableMovies, false);
                     sortBtn.setText("Sort (desc)");
                 } else {
-                    // sort observableMovies descending
+                    // Sort movies in descending order
                     sortMovies(observableMovies, true);
                     sortBtn.setText("Sort (asc)");
                 }
             });
         }
 
+        // Populate the genre combo box with available genres
         List<Genre> genres = new ArrayList<>(Arrays.asList(Genre.values()));
         genreComboBox.getItems().addAll(genres);
         genreComboBox.setPromptText("Filter by Genre");
 
+        // Set action for the search button
         searchBtn.setOnAction(event -> {
+            // Filter movies based on search query and selected genre
             getSearchAndGenre();
             filterMovies();
         });
     }
 
+    // Reset the movies in the list view to the original list
     private void resetMovies() {
         observableMovies.clear();
         observableMovies.addAll(getAllMovies());
     }
 
+    // Get the search query and selected genre from UI components
     private void getSearchAndGenre() {
         query = searchField.getText().toLowerCase();
         selectedGenre = genreComboBox.getValue();
     }
 
+    // Filter the movies based on search query and selected genre
     public void filterMovies() {
         resetMovies();
 
@@ -130,9 +139,9 @@ public class HomeController implements Initializable {
                 .collect(Collectors.toList());
 
         observableMovies.setAll(filteredMovies);
-            observableMovies.setAll(filteredMovies);
     }
 
+    // Sort the movies in the list based on the specified order
     public void sortMovies(List<Movie> movies, boolean descending) {
         if (descending) movies.sort(Comparator.reverseOrder());
         else Collections.sort(movies);

@@ -1,5 +1,8 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
+/**
+ * Enumeration representing different genres of movies.
+ */
 public enum Genre {
     ALL,
     ACTION,

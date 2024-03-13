@@ -2,11 +2,8 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
-import com.jfoenix.controls.JFXButton;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,7 +11,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
+/**
+ * This class contains unit tests for the HomeController class.
+ */
 class HomeControllerTest {
+    // Unit tests for filtering movies by genre
     @Test
     void genre_all_is_correct_filtered(){
         HomeController homeController = new HomeController();
@@ -372,6 +373,7 @@ class HomeControllerTest {
             assertTrue(movie.getGenres().contains(genre));
         }
     }
+    // Unit tests for higher lower case
     @Test
     void higher_to_lower_case_is_working(){
         HomeController homeController = new HomeController();
@@ -389,7 +391,7 @@ class HomeControllerTest {
             assertTrue(movie.getTitle().contains(query));
         }
     }
-
+    // Unit tests for filtering movies by title or description
     @Test
     void search_description_is_working(){
         HomeController homeController = new HomeController();
@@ -407,6 +409,7 @@ class HomeControllerTest {
             assertTrue(movie.getDescription().contains(query));
         }
     }
+    // Unit tests for sorting movies
 
     @Test
     void test_movie_sorting_empty_list() {
