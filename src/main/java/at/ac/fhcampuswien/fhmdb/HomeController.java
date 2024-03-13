@@ -25,81 +25,108 @@ public class HomeController implements Initializable {
     public TextField searchField;
 
     @FXML
-    public JFXListView movieListView;
+    public JFXListView<Movie> movieListView;
 
     @FXML
-    public JFXComboBox genreComboBox;
+    public JFXComboBox<Genre> genreComboBox;
 
     @FXML
     public JFXButton sortBtn;
 
-    public List<Movie> allMovies = Movie.initializeMovies();
+    private List<Movie> allMovies = Movie.initializeMovies();
 
-    private final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
+    private final ObservableList<Movie> observableMovies = FXCollections.observableArrayList();
+
+    public ObservableList<Movie> getObservableMovies() {
+        return observableMovies;
+    }
+
+    private String query;
+
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+    private Genre selectedGenre;
+
+    public Genre getSelectedGenre() {
+        return selectedGenre;
+    }
+
+    public void setSelectedGenre(Genre selectedGenre) {
+        this.selectedGenre = selectedGenre;
+    }
+
+    public List<Movie> getAllMovies() {
+        return allMovies;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        observableMovies.addAll(allMovies); // add dummy data to observable list
+        observableMovies.addAll(getAllMovies());
+        movieListView.setItems(observableMovies);
+        movieListView.setCellFactory(movieListView -> new MovieCell());
 
-
-        // initialize UI stuff
-        movieListView.setItems(observableMovies);   // set data of observable list to list view.
-        movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
-
-        // TODO add genre filter items with genreComboBox.getItems().addAll(...)
-        List<Genre> genres = new ArrayList<>(Arrays.asList(Genre.values()));  // Konvertieren des Genre-Enums in eine Liste
+        List<Genre> genres = new ArrayList<>(Arrays.asList(Genre.values()));
         genreComboBox.getItems().addAll(genres);
         genreComboBox.setPromptText("Filter by Genre");
 
-        // TODO add event handlers to buttons and call the regarding methods
-        // either set event handlers in the fxml file (onAction) or add them here
-        searchBtn.setOnAction(event -> filterMovies());
-        sortBtn.setOnAction(event -> sortMovies());
+        searchBtn.setOnAction(event -> {
+            getSearchAndGenre();
+            filterMovies();
+        });
 
+        sortBtn.setOnAction(event -> {
+            getSearchAndGenre();
+            sortMovies();
+        });
     }
 
     private void resetMovies() {
         observableMovies.clear();
-        observableMovies.addAll(allMovies);
+        observableMovies.addAll(getAllMovies());
     }
 
-    private void filterMovies() {
-        resetMovies();
+    private void getSearchAndGenre() {
+        query = searchField.getText().toLowerCase();
+        selectedGenre = genreComboBox.getValue();
+    }
 
-        String query = searchField.getText().toLowerCase();
-        Genre selectedGenre = genreComboBox.getValue() != null ? Genre.valueOf(genreComboBox.getValue().toString()) : null;
+    public void filterMovies() {
+        resetMovies();
 
         Predicate<Movie> titleDescriptionPredicate = movie ->
                 movie.getTitle().toLowerCase().contains(query) ||
                         movie.getDescription().toLowerCase().contains(query);
 
-       Predicate<Movie> genrePredicate;
-       if (selectedGenre == Genre.ALL) {
-           genrePredicate = movie -> true;
-       } else {
-           genrePredicate = movie ->
-                   selectedGenre == null || movie.getGenres().contains(selectedGenre);
-       }
+        Predicate<Movie> genrePredicate = movie -> {
+            if (selectedGenre == null || selectedGenre == Genre.ALL)
+                return true;
+            else
+                return movie.getGenres().contains(selectedGenre);
+        };
 
-        List<Movie> filteredMovies = allMovies.stream()
+        List<Movie> filteredMovies = getAllMovies().stream()
                 .filter(titleDescriptionPredicate)
                 .filter(genrePredicate)
                 .collect(Collectors.toList());
 
-            observableMovies.setAll(filteredMovies);
-
-
+        observableMovies.setAll(filteredMovies);
     }
 
-        private void sortMovies() {
-            Comparator<Movie> titleComparator = Comparator.comparing(Movie::getTitle);
+    private void sortMovies() {
+        Comparator<Movie> titleComparator = Comparator.comparing(Movie::getTitle);
 
-            if (sortBtn.getText().equals("Sort (asc)")) {
-                observableMovies.sort(titleComparator);
-                sortBtn.setText("Sort (desc)");
-            } else {
-                observableMovies.sort(titleComparator.reversed());
-                sortBtn.setText("Sort (asc)");
-            }
+        if (sortBtn.getText().equals("Sort (asc)")) {
+            observableMovies.sort(titleComparator);
+            sortBtn.setText("Sort (desc)");
+        } else {
+            observableMovies.sort(titleComparator.reversed());
+            sortBtn.setText("Sort (asc)");
         }
+    }
 }
