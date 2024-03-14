@@ -67,7 +67,6 @@ public class HomeController implements Initializable {
     public List<Movie> getAllMovies() {
         return allMovies;
     }
-    //public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
     // Initialize method for the HomeController
     @Override
