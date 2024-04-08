@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Rating;
@@ -66,6 +67,15 @@ public class HomeController implements Initializable {
 
     public List<Movie> getAllMovies() {
         return allMovies;
+    }
+
+    public MovieAPI movieAPI;
+    public HomeController() {
+        // Standardkonstruktor ohne Parameter
+    }
+
+    public HomeController(MovieAPI movieAPI) {
+        this.movieAPI = movieAPI;
     }
 
     // Initialize method for the HomeController
@@ -154,5 +164,39 @@ public class HomeController implements Initializable {
     public void sortMovies(List<Movie> movies, boolean descending) {
         if (descending) movies.sort(Comparator.reverseOrder());
         else Collections.sort(movies);
+    }
+
+    public String getMostPopularActor(List<Movie> movies) {
+        // Gruppierung der Schauspieler und Zählen ihrer Vorkommen in den Hauptbesetzungen der Filme
+        Map<String, Long> actorCounts = movies.stream()
+                .flatMap(movie -> movie.getMainCast().stream())
+                .collect(Collectors.groupingBy(actor -> actor, Collectors.counting()));
+
+        // Ermittlung des Schauspielers mit den meisten Vorkommen
+        return actorCounts.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null); // Wenn keine Schauspieler gefunden werden, wird null zurückgegeben
+    }
+
+    public int getLongestMovieTitle(List<Movie> movies) {
+        // Ermittlung der Länge des längsten Filmtitels
+        return movies.stream()
+                .mapToInt(movie -> movie.getTitle().length())
+                .max()
+                .orElse(0); // Wenn keine Filme gefunden werden, wird 0 zurückgegeben
+    }
+
+    public long countMoviesFrom(List<Movie> movies, String director) {
+        return movies.stream()
+                .filter(movie -> movie.getDirector() != null && movie.getDirector().contains(director))
+                .count();
+    }
+
+    public List<Movie> getMoviesBetweenYears(List<Movie> movies, int startYear, int endYear) {
+        // Filtern der Filme zwischen den gegebenen Jahren
+        return movies.stream()
+                .filter(movie -> movie.getReleaseYear() >= startYear && movie.getReleaseYear() <= endYear)
+                .collect(Collectors.toList());
     }
 }

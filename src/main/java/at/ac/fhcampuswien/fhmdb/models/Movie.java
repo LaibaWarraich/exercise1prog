@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -10,6 +11,10 @@ public class Movie implements Comparable<Movie> {
     private String title;
     private String description;
     private List<Genre> genres;
+
+    private final List<String> director = new ArrayList<>();
+    private final List<String> mainCast = new ArrayList<>();
+    private final int releaseYear;
 
     /**
      * Constructs a Movie object with the given title, description, and genres.
@@ -21,6 +26,7 @@ public class Movie implements Comparable<Movie> {
         this.title = title;
         this.description = description;
         this.genres = genres;
+        this.releaseYear = 0;
     }
 
     /**
@@ -114,5 +120,15 @@ public class Movie implements Comparable<Movie> {
         movies.add(new Movie("The Matrix", "Sci-fi action about a computer hacker.",
                 List.of(Genre.ACTION, Genre.SCIENCE_FICTION)));
         return movies;
+    }
+
+    public List<String> getMainCast() {
+        return mainCast;
+    }
+    public List<String> getDirector() {
+        return director;
+    }
+    public int getReleaseYear() {
+        return releaseYear;
     }
 }

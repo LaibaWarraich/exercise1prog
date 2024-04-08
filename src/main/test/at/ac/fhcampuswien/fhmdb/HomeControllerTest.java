@@ -1,11 +1,14 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +21,7 @@ class HomeControllerTest {
     // Unit tests for filtering movies by genre
     @Test
     void genre_all_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.ALL;
 
@@ -35,7 +38,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_action_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.ACTION;
 
@@ -52,7 +55,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_adventure_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.ADVENTURE;
 
@@ -69,7 +72,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_animation_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.ANIMATION;
 
@@ -86,7 +89,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_biography_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.BIOGRAPHY;
 
@@ -103,7 +106,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_comedy_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.COMEDY;
 
@@ -120,7 +123,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_crime_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.CRIME;
 
@@ -137,7 +140,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_drama_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.DRAMA;
 
@@ -154,7 +157,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_documentary_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.DOCUMENTARY;
 
@@ -171,7 +174,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_family_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.FAMILY;
 
@@ -188,7 +191,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_fantasy_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.FANTASY;
 
@@ -205,7 +208,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_history_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.HISTORY;
 
@@ -222,7 +225,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_horror_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.HORROR;
 
@@ -239,7 +242,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_musical_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.MUSICAL;
 
@@ -256,7 +259,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_mystery_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.MYSTERY;
 
@@ -273,7 +276,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_romance_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.ROMANCE;
 
@@ -290,7 +293,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_science_fiction_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.SCIENCE_FICTION;
 
@@ -307,7 +310,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_sport_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.SPORT;
 
@@ -324,7 +327,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_thriller_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.THRILLER;
 
@@ -341,7 +344,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_war_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.WAR;
 
@@ -358,7 +361,7 @@ class HomeControllerTest {
     }
     @Test
     void genre_western_is_correct_filtered(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.WESTERN;
 
@@ -376,7 +379,7 @@ class HomeControllerTest {
     // Unit tests for higher lower case
     @Test
     void higher_to_lower_case_is_working(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         String query = "Toy Story";
 
@@ -394,7 +397,7 @@ class HomeControllerTest {
     // Unit tests for filtering movies by title or description
     @Test
     void search_description_is_working(){
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         // Given
         String query = "Toy Story";
 
@@ -413,21 +416,21 @@ class HomeControllerTest {
 
     @Test
     void test_movie_sorting_empty_list() {
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         List<Movie> emptyList = new ArrayList<>();
         assertDoesNotThrow(() -> homeController.sortMovies(emptyList, false));
     }
 
     @Test
     void test_movie_sorting_null_list() {
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         homeController.observableMovies = null;
         assertThrows(NullPointerException.class, () -> homeController.sortMovies(null, false));
     }
 
     @Test
     void test_reverse_sorting_order() {
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
 
         List<Movie> sortedMovies = Movie.initializeMovies().stream()
                 .sorted(Comparator.comparing(Movie::getTitle).reversed())
@@ -441,7 +444,7 @@ class HomeControllerTest {
     @Test
     public void sort_movies_ascending_by_title() {
         // GIVEN
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         Movie movie1 = new Movie("The Dark Knight", "A crime thriller featuring Batman.",
                 List.of(Genre.ACTION, Genre.CRIME, Genre.DRAMA, Genre.THRILLER));
         Movie movie2 = new Movie("An Inconvenient Truth", "Documentary about climate change.",
@@ -471,7 +474,7 @@ class HomeControllerTest {
     @Test
     public void sort_movies_descending_by_title() {
         // GIVEN
-        HomeController homeController = new HomeController();
+        HomeController homeController = new HomeController(new MovieAPI());
         Movie movie1 = new Movie("The Dark Knight", "A crime thriller featuring Batman.",
                 List.of(Genre.ACTION, Genre.CRIME, Genre.DRAMA, Genre.THRILLER));
         Movie movie2 = new Movie("An Inconvenient Truth", "Documentary about climate change.",
@@ -497,5 +500,53 @@ class HomeControllerTest {
 
         assertEquals(homeController.getObservableMovies(), expectedMovies);
     }
+
+    @Test
+    void get_most_popular_actor() {
+        HomeController homeController = new HomeController(new MovieAPI());
+        List<Movie> movies = homeController.movieAPI.getAllMovies();
+
+        String mostPopularActor = homeController.getMostPopularActor(movies);
+
+        assertNotNull(mostPopularActor);
+        System.out.println("Most Popular Actor: " + mostPopularActor);
+    }
+
+    @Test
+    void get_longest_movie_title() {
+        HomeController homeController = new HomeController(new MovieAPI());
+        List<Movie> movies = homeController.movieAPI.getAllMovies();
+
+        int longestTitleLength = homeController.getLongestMovieTitle(movies);
+
+        assertTrue(longestTitleLength > 0);
+        System.out.println("Longest Movie Title Length: " + longestTitleLength);
+    }
+
+    @Test
+    void count_movies_from() {
+        HomeController homeController = new HomeController(new MovieAPI());
+        List<Movie> movies = homeController.movieAPI.getAllMovies();
+
+        String director = "Christopher Nolan";
+        long movieCount = homeController.countMoviesFrom(movies, director);
+
+        System.out.println("Movie Count by " + director + ": " + movieCount);
+    }
+
+
+    @Test
+    void get_movies_between_years() {
+        HomeController homeController = new HomeController(new MovieAPI());
+        List<Movie> movies = homeController.movieAPI.getAllMovies();
+
+        int startYear = 2000;
+        int endYear = 2010;
+        List<Movie> moviesBetweenYears = homeController.getMoviesBetweenYears(movies, startYear, endYear);
+
+        assertFalse(moviesBetweenYears.isEmpty());
+        System.out.println("Movies between " + startYear + " and " + endYear + ": " + moviesBetweenYears.size());
+    }
+
 
 }
