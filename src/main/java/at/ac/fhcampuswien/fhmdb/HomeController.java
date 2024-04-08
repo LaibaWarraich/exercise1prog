@@ -2,6 +2,8 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
+import at.ac.fhcampuswien.fhmdb.models.Rating;
+import at.ac.fhcampuswien.fhmdb.models.Years;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -32,6 +34,8 @@ public class HomeController implements Initializable {
 
     @FXML
     public JFXButton sortBtn;
+    public JFXComboBox<Years> YearComboBox;
+    public JFXComboBox<Rating> RatingComboBox;
 
     private List<Movie> allMovies = Movie.initializeMovies();
 
@@ -92,6 +96,16 @@ public class HomeController implements Initializable {
         List<Genre> genres = new ArrayList<>(Arrays.asList(Genre.values()));
         genreComboBox.getItems().addAll(genres);
         genreComboBox.setPromptText("Filter by Genre");
+
+        // Populate the release year combo box with available years
+        List<Years> years = new ArrayList<>(Arrays.asList(Years.values()));
+        YearComboBox.getItems().addAll(years);
+        YearComboBox.setPromptText("Filter by Release Year");
+
+        // Populate the release year combo box with available ratings
+        List<Rating> rating = new ArrayList<>(Arrays.asList(Rating.values()));
+        RatingComboBox.getItems().addAll(rating);
+        RatingComboBox.setPromptText("Filter by Rating");
 
         // Set action for the search button
         searchBtn.setOnAction(event -> {
