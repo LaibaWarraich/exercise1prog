@@ -56,10 +56,6 @@ public class HomeController implements Initializable {
 
     private Genre selectedGenre;
 
-    public Genre getSelectedGenre() {
-        return selectedGenre;
-    }
-
     public void setSelectedGenre(Genre selectedGenre) {
         this.selectedGenre = selectedGenre;
     }
