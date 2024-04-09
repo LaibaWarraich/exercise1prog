@@ -16,6 +16,12 @@ public class MovieCell extends ListCell<Movie> {
     private final Label title = new Label();
     private final Label detail = new Label();
     private final Label genre = new Label();
+    private final Label releaseYear = new Label();
+    private final Label rating = new Label();
+    private final Label directors = new Label();
+    private final Label mainCast = new Label();
+    private final Label lengthInMinutes = new Label();
+
     private final VBox layout = new VBox(title, detail);
 
     @Override
@@ -35,11 +41,17 @@ public class MovieCell extends ListCell<Movie> {
             );
             String genresText = "Genres: " + movie.getGenresAsString();
             genre.setText(genresText);
+            String releaseYearText = "Release Year: " + movie.getReleaseYearAsString();
+            releaseYear.setText(releaseYearText);
+            String ratingText = "Rating: " + movie.getRatingAsString();
+            rating.setText(ratingText);
 
             // Color scheme
             title.getStyleClass().add("text-yellow");
             detail.getStyleClass().add("text-white");
             genre.getStyleClass().add("text-white");
+            releaseYear.getStyleClass().add("text-white");
+            rating.getStyleClass().add("text-white");
             layout.setBackground(new Background(new BackgroundFill(Color.web("#454545"), null, null)));
 
             // Layout
@@ -48,12 +60,16 @@ public class MovieCell extends ListCell<Movie> {
             detail.setWrapText(true);
             genre.setMaxWidth(this.getScene().getWidth() - 30);
             genre.setWrapText(true);
+            releaseYear.setMaxWidth(this.getScene().getWidth() - 30);
+            releaseYear.setWrapText(true);
+            rating.setMaxWidth(this.getScene().getWidth() - 30);
+            rating.setWrapText(true);
             layout.setPadding(new Insets(10));
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
 
             layout.getChildren().clear();
-            layout.getChildren().addAll(title, detail, genre);
+            layout.getChildren().addAll(title, detail, genre, releaseYear, rating);
 
             setGraphic(layout);
         }

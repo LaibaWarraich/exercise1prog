@@ -446,11 +446,11 @@ class HomeControllerTest {
         // GIVEN
         HomeController homeController = new HomeController(new MovieAPI());
         Movie movie1 = new Movie("The Dark Knight", "A crime thriller featuring Batman.",
-                List.of(Genre.ACTION, Genre.CRIME, Genre.DRAMA, Genre.THRILLER));
+                List.of(Genre.ACTION, Genre.CRIME, Genre.DRAMA, Genre.THRILLER), 7.0, 2000);
         Movie movie2 = new Movie("An Inconvenient Truth", "Documentary about climate change.",
-                List.of(Genre.DOCUMENTARY));
+                List.of(Genre.DOCUMENTARY), 4.0, 2010);
         Movie movie3 = new Movie("Finding Nemo", "Animated adventure under the sea.",
-                List.of(Genre.ANIMATION, Genre.ADVENTURE, Genre.COMEDY));
+                List.of(Genre.ANIMATION, Genre.ADVENTURE, Genre.COMEDY), 9.0, 2017);
 
         ObservableList<Movie> observableMovies = FXCollections.observableArrayList();
         observableMovies.add(movie1);
@@ -476,11 +476,11 @@ class HomeControllerTest {
         // GIVEN
         HomeController homeController = new HomeController(new MovieAPI());
         Movie movie1 = new Movie("The Dark Knight", "A crime thriller featuring Batman.",
-                List.of(Genre.ACTION, Genre.CRIME, Genre.DRAMA, Genre.THRILLER));
+                List.of(Genre.ACTION, Genre.CRIME, Genre.DRAMA, Genre.THRILLER), 7.0, 2000);
         Movie movie2 = new Movie("An Inconvenient Truth", "Documentary about climate change.",
-                List.of(Genre.DOCUMENTARY));
+                List.of(Genre.DOCUMENTARY), 4.0, 2010);
         Movie movie3 = new Movie("Finding Nemo", "Animated adventure under the sea.",
-                List.of(Genre.ANIMATION, Genre.ADVENTURE, Genre.COMEDY));
+                List.of(Genre.ANIMATION, Genre.ADVENTURE, Genre.COMEDY), 9.0, 2017);
 
         ObservableList<Movie> observableMovies = FXCollections.observableArrayList();
         observableMovies.add(movie1);

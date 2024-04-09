@@ -71,7 +71,7 @@ public class HomeController implements Initializable {
 
     public MovieAPI movieAPI;
     public HomeController() {
-        // Standardkonstruktor ohne Parameter
+        // Default constructor without parameter
     }
 
     public HomeController(MovieAPI movieAPI) {
