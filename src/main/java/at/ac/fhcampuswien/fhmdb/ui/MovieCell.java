@@ -19,10 +19,11 @@ public class MovieCell extends ListCell<Movie> {
     private final Label releaseYear = new Label();
     private final Label rating = new Label();
     private final Label directors = new Label();
+    private final Label writers = new Label();
     private final Label mainCast = new Label();
     private final Label lengthInMinutes = new Label();
 
-    private final VBox layout = new VBox(title, detail);
+    private final VBox layout = new VBox(title, detail, genre, releaseYear, rating, directors, writers, mainCast, lengthInMinutes);
 
     @Override
     protected void updateItem(Movie movie, boolean empty) {
@@ -45,6 +46,15 @@ public class MovieCell extends ListCell<Movie> {
             releaseYear.setText(releaseYearText);
             String ratingText = "Rating: " + movie.getRatingAsString();
             rating.setText(ratingText);
+            String directorsText = "Directors: " + movie.getDirectorsAsString();
+            directors.setText(directorsText);
+            String writersText = "Writers: " + movie.getWritersAsString();
+            writers.setText(writersText);
+            String mainCastText = "MainCast: " + movie.getMainCastAsString();
+            mainCast.setText(mainCastText);
+            String lengthText = "Length: " + movie.getLengthInMinutesAsString() + " min";
+            lengthInMinutes.setText(lengthText);
+
 
             // Color scheme
             title.getStyleClass().add("text-yellow");
@@ -52,6 +62,10 @@ public class MovieCell extends ListCell<Movie> {
             genre.getStyleClass().add("text-white");
             releaseYear.getStyleClass().add("text-white");
             rating.getStyleClass().add("text-white");
+            directors.getStyleClass().add("text-white");
+            writers.getStyleClass().add("text-white");
+            mainCast.getStyleClass().add("text-white");
+            lengthInMinutes.getStyleClass().add("text-white");
             layout.setBackground(new Background(new BackgroundFill(Color.web("#454545"), null, null)));
 
             // Layout
@@ -64,12 +78,20 @@ public class MovieCell extends ListCell<Movie> {
             releaseYear.setWrapText(true);
             rating.setMaxWidth(this.getScene().getWidth() - 30);
             rating.setWrapText(true);
+            directors.setMaxWidth(this.getScene().getWidth() - 30);
+            directors.setWrapText(true);
+            writers.setMaxWidth(this.getScene().getWidth() - 30);
+            writers.setWrapText(true);
+            mainCast.setMaxWidth(this.getScene().getWidth() - 30);
+            mainCast.setWrapText(true);
+            lengthInMinutes.setMaxWidth(this.getScene().getWidth() - 30);
+            lengthInMinutes.setWrapText(true);
             layout.setPadding(new Insets(10));
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
 
             layout.getChildren().clear();
-            layout.getChildren().addAll(title, detail, genre, releaseYear, rating);
+            layout.getChildren().addAll(title, detail, genre, releaseYear, rating, directors, writers, mainCast, lengthInMinutes);
 
             setGraphic(layout);
         }
