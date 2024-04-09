@@ -26,4 +26,8 @@ public enum Rating {
             return String.valueOf(rating);
         }
     }
+
+    public double getRating() {
+        return 0;
+    }
 }

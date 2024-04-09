@@ -70,6 +70,8 @@ public class HomeController implements Initializable {
     }
 
     public MovieAPI movieAPI;
+    private Rating selectedRating;
+    private Years selectedYear;
     public HomeController() {
         // Default constructor without parameter
     }
@@ -102,17 +104,14 @@ public class HomeController implements Initializable {
             });
         }
 
-        // Populate the genre combo box with available genres
         List<Genre> genres = new ArrayList<>(Arrays.asList(Genre.values()));
         genreComboBox.getItems().addAll(genres);
         genreComboBox.setPromptText("Filter by Genre");
 
-        // Populate the release year combo box with available years
         List<Years> years = new ArrayList<>(Arrays.asList(Years.values()));
         YearComboBox.getItems().addAll(years);
         YearComboBox.setPromptText("Filter by Release Year");
 
-        // Populate the release year combo box with available ratings
         List<Rating> rating = new ArrayList<>(Arrays.asList(Rating.values()));
         RatingComboBox.getItems().addAll(rating);
         RatingComboBox.setPromptText("Filter by Rating");
@@ -122,6 +121,8 @@ public class HomeController implements Initializable {
             // Filter movies based on search query and selected genre
             getSearchAndGenre();
             filterMovies();
+            filterRating(); // Call the method to filter by rating
+            filterReleaseYear();
         });
     }
 
@@ -165,6 +166,47 @@ public class HomeController implements Initializable {
         if (descending) movies.sort(Comparator.reverseOrder());
         else Collections.sort(movies);
     }
+
+    public void filterReleaseYear() {
+        Years selectedYear = YearComboBox.getValue();
+
+        Predicate<Movie> yearPredicate = movie -> {
+            if (selectedYear == null || selectedYear == Years.ALL)
+                return true;
+            else
+                return movie.getReleaseYear() == selectedYear.getYear();
+        };
+
+        // Check if there is a filter applied
+        if (selectedYear != null && selectedYear != Years.ALL) {
+            List<Movie> filteredMovies = getAllMovies().stream()
+                    .filter(yearPredicate)
+                    .collect(Collectors.toList());
+            observableMovies.setAll(filteredMovies); // Set filtered movies to observableMovies
+        } else {
+            // No filter applied, set all movies
+            observableMovies.setAll(getAllMovies());
+        }
+    }
+    public void filterRating() {
+        // Get the selected rating from the combo box
+        Rating selectedRating = RatingComboBox.getValue();
+
+        // Filter movies based on selected rating
+        Predicate<Movie> ratingPredicate = movie -> {
+            if (selectedRating == null || selectedRating == Rating.ALL)
+                return true;
+            else
+                return movie.getRating() >= selectedRating.getRating();
+        };
+
+        List<Movie> filteredMovies = getAllMovies().stream()
+                .filter(ratingPredicate)
+                .collect(Collectors.toList());
+
+        observableMovies.setAll(filteredMovies); // Set filtered movies to observableMovies
+    }
+
 
     public String getMostPopularActor(List<Movie> movies) {
         // Gruppierung der Schauspieler und Zählen ihrer Vorkommen in den Hauptbesetzungen der Filme

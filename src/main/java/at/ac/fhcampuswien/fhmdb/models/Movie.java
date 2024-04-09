@@ -128,4 +128,8 @@ public class Movie implements Comparable<Movie> {
     public int getReleaseYear() {
         return releaseYear;
     }
+
+    public double getRating() {
+        return rating;
+    }
 }

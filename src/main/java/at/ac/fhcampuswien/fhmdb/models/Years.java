@@ -42,4 +42,8 @@ public enum Years {
             return String.valueOf(year);
         }
     }
+
+    public int getYear() {
+        return 0;
+    }
 }
