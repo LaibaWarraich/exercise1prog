@@ -2,6 +2,49 @@ package at.ac.fhcampuswien.fhmdb.models;
 
 public enum Years {
     ALL(1),
+    YEAR_1957(1957),
+    YEAR_1958(1958),
+    YEAR_1959(1959),
+    YEAR_1960(1960),
+    YEAR_1961(1961),
+    YEAR_1962(1962),
+    YEAR_1963(1963),
+    YEAR_1964(1964),
+    YEAR_1965(1965),
+    YEAR_1966(1966),
+    YEAR_1967(1967),
+    YEAR_1968(1968),
+    YEAR_1969(1969),
+    YEAR_1970(1970),
+    YEAR_1971(1971),
+    YEAR_1972(1972),
+    YEAR_1973(1973),
+    YEAR_1974(1974),
+    YEAR_1975(1975),
+    YEAR_1976(1976),
+    YEAR_1977(1977),
+    YEAR_1978(1978),
+    YEAR_1979(1979),
+    YEAR_1980(1980),
+    YEAR_1981(1981),
+    YEAR_1982(1982),
+    YEAR_1983(1983),
+    YEAR_1984(1984),
+    YEAR_1985(1985),
+    YEAR_1986(1986),
+    YEAR_1987(1987),
+    YEAR_1988(1988),
+    YEAR_1989(1989),
+    YEAR_1990(1990),
+    YEAR_1991(1991),
+    YEAR_1992(1992),
+    YEAR_1993(1993),
+    YEAR_1994(1994),
+    YEAR_1995(1995),
+    YEAR_1996(1996),
+    YEAR_1997(1997),
+    YEAR_1998(1998),
+    YEAR_1999(1999),
     YEAR_2000(2000),
     YEAR_2001(2001),
     YEAR_2002(2002),
@@ -44,6 +87,6 @@ public enum Years {
     }
 
     public int getYear() {
-        return 0;
+        return this.year;
     }
 }

@@ -51,10 +51,6 @@ public class HomeController implements Initializable {
 
     private String query;
 
-    public String getQuery() {
-        return query;
-    }
-
     public void setQuery(String query) {
         this.query = query;
     }
@@ -119,10 +115,8 @@ public class HomeController implements Initializable {
         // Set action for the search button
         searchBtn.setOnAction(event -> {
             // Filter movies based on search query and selected genre
-            getSearchAndGenre();
+            getSearchGenreYearRating();
             filterMovies();
-            filterRating(); // Call the method to filter by rating
-            filterReleaseYear();
         });
     }
 
@@ -133,12 +127,14 @@ public class HomeController implements Initializable {
     }
 
     // Get the search query and selected genre from UI components
-    private void getSearchAndGenre() {
+    private void getSearchGenreYearRating() {
         query = searchField.getText().toLowerCase();
         selectedGenre = genreComboBox.getValue();
+        selectedYear = YearComboBox.getValue();
+        selectedRating = RatingComboBox.getValue();
     }
 
-    // Filter the movies based on search query and selected genre
+    // Filter the movies based on search query, selected genre, releaseYear and rating(Kommastelle wird ignoriert)
     public void filterMovies() {
         resetMovies();
 
@@ -153,9 +149,25 @@ public class HomeController implements Initializable {
                 return movie.getGenres().contains(selectedGenre);
         };
 
+        Predicate<Movie> releaseYearPredicate = movie -> {
+            if (selectedYear == null || selectedYear == Years.ALL)
+                return true;
+            else
+                return movie.getReleaseYear() == selectedYear.getYear();
+        };
+
+        Predicate<Movie> ratingPredicate = movie -> {
+            if (selectedRating == null || selectedRating == Rating.ALL)
+                return true;
+            else
+                return (int) movie.getRating() == selectedRating.getRating();
+        };
+
         List<Movie> filteredMovies = getAllMovies().stream()
                 .filter(titleDescriptionPredicate)
                 .filter(genrePredicate)
+                .filter(releaseYearPredicate)
+                .filter(ratingPredicate)
                 .collect(Collectors.toList());
 
         observableMovies.setAll(filteredMovies);
@@ -165,46 +177,6 @@ public class HomeController implements Initializable {
     public void sortMovies(List<Movie> movies, boolean descending) {
         if (descending) movies.sort(Comparator.reverseOrder());
         else Collections.sort(movies);
-    }
-
-    public void filterReleaseYear() {
-        Years selectedYear = YearComboBox.getValue();
-
-        Predicate<Movie> yearPredicate = movie -> {
-            if (selectedYear == null || selectedYear == Years.ALL)
-                return true;
-            else
-                return movie.getReleaseYear() == selectedYear.getYear();
-        };
-
-        // Check if there is a filter applied
-        if (selectedYear != null && selectedYear != Years.ALL) {
-            List<Movie> filteredMovies = getAllMovies().stream()
-                    .filter(yearPredicate)
-                    .collect(Collectors.toList());
-            observableMovies.setAll(filteredMovies); // Set filtered movies to observableMovies
-        } else {
-            // No filter applied, set all movies
-            observableMovies.setAll(getAllMovies());
-        }
-    }
-    public void filterRating() {
-        // Get the selected rating from the combo box
-        Rating selectedRating = RatingComboBox.getValue();
-
-        // Filter movies based on selected rating
-        Predicate<Movie> ratingPredicate = movie -> {
-            if (selectedRating == null || selectedRating == Rating.ALL)
-                return true;
-            else
-                return movie.getRating() >= selectedRating.getRating();
-        };
-
-        List<Movie> filteredMovies = getAllMovies().stream()
-                .filter(ratingPredicate)
-                .collect(Collectors.toList());
-
-        observableMovies.setAll(filteredMovies); // Set filtered movies to observableMovies
     }
 
 

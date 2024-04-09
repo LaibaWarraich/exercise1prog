@@ -28,6 +28,6 @@ public enum Rating {
     }
 
     public double getRating() {
-        return 0;
+        return this.rating;
     }
 }
