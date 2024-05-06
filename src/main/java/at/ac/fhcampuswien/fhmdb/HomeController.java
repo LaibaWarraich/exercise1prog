@@ -12,9 +12,17 @@ import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Predicate;
@@ -35,6 +43,57 @@ public class HomeController implements Initializable {
 
     @FXML
     public JFXButton sortBtn;
+    @FXML
+    private VBox menuPane;
+
+    private boolean menuVisible = false; // Flag, um den Status des Menüs zu verfolgen
+
+    @FXML
+    private void toggleMenu() {
+        if (menuVisible) {
+            menuPane.setVisible(false);
+            BorderPane.setMargin(menuPane, null); // Rand entfernen
+        } else {
+            menuPane.setVisible(true);
+            BorderPane.setMargin(menuPane, new Insets(0, 10, 0, 0)); // Rand hinzufügen
+        }
+        menuVisible = !menuVisible; // Menüstatus umkehren
+    }
+
+    @FXML
+    private void showHome() {
+        menuPane.setVisible(false);
+        menuPane.setVisible(false);
+
+        searchField.clear();
+
+        genreComboBox.getSelectionModel().clearSelection();
+        YearComboBox.getSelectionModel().clearSelection();
+        RatingComboBox.getSelectionModel().clearSelection();
+
+        observableMovies.setAll(getAllMovies());
+
+        sortBtn.setText("Sort (asc)");
+        if (menuVisible) {
+            toggleMenu();
+        }
+    }
+    @FXML
+    public void showWatchlist() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("watchlist-view.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Watchlist");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (menuVisible) {
+            toggleMenu();
+        }
+    }
     public JFXComboBox<Years> YearComboBox;
     public JFXComboBox<Rating> RatingComboBox;
 
@@ -80,9 +139,10 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Populate the movie list view with initial data
+
         observableMovies.addAll(getAllMovies());
         movieListView.setItems(observableMovies);
-        movieListView.setCellFactory(movieListView -> new MovieCell());
+        movieListView.setCellFactory(movieListView -> new MovieCell(param -> new MovieCell(this::addToWatchlistClicked)));
         observableMovies.addAll(allMovies); // add dummy data to observable list
 
         // Set action for the sort button
@@ -118,6 +178,9 @@ public class HomeController implements Initializable {
             getSearchGenreYearRating();
             filterMovies();
         });
+    }
+    private void addToWatchlistClicked(String movie) {
+        // Code zum Hinzufügen des Films zur Watchlist
     }
 
     // Reset the movies in the list view to the original list

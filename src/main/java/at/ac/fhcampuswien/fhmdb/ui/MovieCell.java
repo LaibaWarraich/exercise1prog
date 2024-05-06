@@ -1,11 +1,16 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
+import at.ac.fhcampuswien.fhmdb.interfaces.ClickEventHandler;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -22,8 +27,22 @@ public class MovieCell extends ListCell<Movie> {
     private final Label writers = new Label();
     private final Label mainCast = new Label();
     private final Label lengthInMinutes = new Label();
+    private final Button watchlistBtn;
 
     private final VBox layout = new VBox(title, detail, genre, releaseYear, rating, directors, writers, mainCast, lengthInMinutes);
+
+    public MovieCell(ClickEventHandler<String> addToWatchlistClicked) {
+        super();
+        watchlistBtn = new Button();
+        //watchlistBtn.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/path/to/watchlist_icon.png"))));
+        watchlistBtn.setOnMouseClicked(mouseEvent -> {
+            addToWatchlistClicked.onClick(String.valueOf(getItem()));
+        });
+
+        // Set up the layout
+        HBox layout = new HBox(10, watchlistBtn);
+        setGraphic(layout);
+    }
 
     @Override
     protected void updateItem(Movie movie, boolean empty) {
@@ -95,5 +114,6 @@ public class MovieCell extends ListCell<Movie> {
 
             setGraphic(layout);
         }
+
     }
 }
