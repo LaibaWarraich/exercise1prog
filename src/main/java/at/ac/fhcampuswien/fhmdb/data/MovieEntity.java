@@ -8,7 +8,6 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-//@DatabaseTable(tableName = "Movie")
 
 @DatabaseTable(tableName = "Movie")
 

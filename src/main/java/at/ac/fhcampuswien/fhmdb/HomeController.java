@@ -145,7 +145,6 @@ public class HomeController implements Initializable {
         observableMovies.addAll(getAllMovies());
         movieListView.setItems(observableMovies);
         movieListView.setCellFactory(movieListView -> new MovieCell(this::addToWatchlistClicked));
-        observableMovies.addAll(allMovies); // add dummy data to observable list
 
         // Set action for the sort button
         if (sortBtn != null) {
