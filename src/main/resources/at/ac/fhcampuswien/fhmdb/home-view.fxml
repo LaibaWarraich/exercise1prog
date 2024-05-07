@@ -40,7 +40,7 @@
 
       <!-- Navigationsleiste -->
       <VBox fx:id="menuPane" spacing="10" style="-fx-background-color: white; visibility: hidden">
-         <!-- Navigation content hier einfügen -->
+         <!-- Navigation content -->
          <JFXButton styleClass="menu-item" stylesheets="@styles.css" text="Home" onAction="#showHome" />
          <JFXButton styleClass="menu-item" stylesheets="@styles.css" text="Watchlist" onAction="#showWatchlist" />
       </VBox>

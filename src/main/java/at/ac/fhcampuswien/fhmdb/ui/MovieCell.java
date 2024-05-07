@@ -27,20 +27,21 @@ public class MovieCell extends ListCell<Movie> {
     private final Label writers = new Label();
     private final Label mainCast = new Label();
     private final Label lengthInMinutes = new Label();
-    private final Button watchlistBtn;
+    private final Button addToWatchlistBtn = new Button("Add to Watchlist");
 
     private final VBox layout = new VBox(title, detail, genre, releaseYear, rating, directors, writers, mainCast, lengthInMinutes);
 
-    public MovieCell(ClickEventHandler<String> addToWatchlistClicked) {
+    public MovieCell(ClickEventHandler<Movie> addToWatchlistClicked) {
         super();
-        watchlistBtn = new Button();
-        //watchlistBtn.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/path/to/watchlist_icon.png"))));
-        watchlistBtn.setOnMouseClicked(mouseEvent -> {
-            addToWatchlistClicked.onClick(String.valueOf(getItem()));
+        addToWatchlistBtn.setOnAction(event -> {
+            Movie movie = getItem();
+            if (movie != null) {
+                addToWatchlistClicked.onClick(movie);
+            }
         });
 
         // Set up the layout
-        HBox layout = new HBox(10, watchlistBtn);
+        HBox layout = new HBox(10, addToWatchlistBtn);
         setGraphic(layout);
     }
 
@@ -110,7 +111,7 @@ public class MovieCell extends ListCell<Movie> {
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
 
             layout.getChildren().clear();
-            layout.getChildren().addAll(title, detail, genre, releaseYear, rating, directors, writers, mainCast, lengthInMinutes);
+            layout.getChildren().addAll(title, detail, genre, releaseYear, rating, directors, writers, mainCast, lengthInMinutes, addToWatchlistBtn);
 
             setGraphic(layout);
         }

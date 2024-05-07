@@ -21,12 +21,19 @@ public class WatchlistRepository {
     public void addToWatchlist(Movie movie) throws SQLException {
         String title = movie.getTitle().replace("'", "''");
         if (dao.queryForEq("title", title).isEmpty()) {
-            dao.create(MovieEntity(movie));
+            dao.create(new MovieEntity(movie));
             System.out.println("Added " + movie.getTitle() + " to Watchlist");
         }
     }
+    */
 
-     */
+
+   public void addToWatchlist(Movie movie) throws SQLException {
+        /*WatchlistMovieEntity watchlistMovieEntity = new WatchlistMovieEntity();
+        watchlistMovieEntity.setApiID(movie.getApiID()); // Hier setze die API-ID oder eine andere eindeutige Kennung des Films
+        dao.create(watchlistMovieEntity);
+        System.out.println("Added " + movie.getTitle() + " to Watchlist");*/
+    }
 
     public void removeFromWatchlist(Movie movie) throws SQLException {
         String title = movie.getTitle().replace("'", "''");

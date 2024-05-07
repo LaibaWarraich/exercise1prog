@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
+import at.ac.fhcampuswien.fhmdb.data.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Rating;
@@ -24,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -142,7 +144,7 @@ public class HomeController implements Initializable {
 
         observableMovies.addAll(getAllMovies());
         movieListView.setItems(observableMovies);
-        movieListView.setCellFactory(movieListView -> new MovieCell(param -> new MovieCell(this::addToWatchlistClicked)));
+        movieListView.setCellFactory(movieListView -> new MovieCell(this::addToWatchlistClicked));
         observableMovies.addAll(allMovies); // add dummy data to observable list
 
         // Set action for the sort button
@@ -179,8 +181,15 @@ public class HomeController implements Initializable {
             filterMovies();
         });
     }
-    private void addToWatchlistClicked(String movie) {
+    private void addToWatchlistClicked(Movie movie) {
         // Code zum Hinzufügen des Films zur Watchlist
+        try {
+            WatchlistRepository watchlistRepository = new WatchlistRepository();
+            watchlistRepository.addToWatchlist(movie);
+            System.out.println("Added " + movie.getTitle() + " to Watchlist");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // Reset the movies in the list view to the original list
