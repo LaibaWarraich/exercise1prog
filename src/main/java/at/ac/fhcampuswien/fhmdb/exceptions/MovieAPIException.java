@@ -1,4 +1,4 @@
-package at.ac.fhcampuswien.fhmdb.exceptions;
+/*package at.ac.fhcampuswien.fhmdb.exceptions;
 
 public class MovieAPIException extends Exception{
     public MovieApiException() {
@@ -17,3 +17,6 @@ public class MovieAPIException extends Exception{
         super(message, cause);
     }
 }
+
+
+ */

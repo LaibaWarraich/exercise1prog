@@ -2,19 +2,18 @@ package at.ac.fhcampuswien.fhmdb.models;
 
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 
 /**
  * Represents a movie with title, description, and genres.
  */
 public class Movie implements Comparable<Movie> {
+    private String id = "";
     private final String title;
     private final String description;
     private final List<Genre> genres;
     private final double rating;
+    private final String imgUrl;
     private final List<String> directors = new ArrayList<>();
     private final List<String> writers = new ArrayList<>();
     private final List<String> mainCast = new ArrayList<>();
@@ -28,20 +27,43 @@ public class Movie implements Comparable<Movie> {
      * @param genres The genres of the movie.
      */
     public Movie(String title, String description, List<Genre> genres, double rating, int releaseYear, int lengthInMinutes) {
+        this.id = UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
         this.genres = genres;
         this.rating = rating;
         this.releaseYear = releaseYear;
+        this.imgUrl = "";
         this.lengthInMinutes = lengthInMinutes;
     }
+    public Movie(String id, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
+        if(id == null) {
+            this.id = UUID.randomUUID().toString();
+        } else {
+            this.id = id;
+        }
+        this.title = title;
+        this.description = description;
+        this.genres = genres;
+        this.releaseYear = releaseYear;
+        this.imgUrl = imgUrl;
+        this.lengthInMinutes = lengthInMinutes;
+        this.rating = rating;
+    }
 
+    public String getId() {
+        return id;
+    }
     /**
      * Gets the title of the movie.
      * @return The title of the movie.
      */
     public String getTitle() {
         return title;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
     }
 
     /**
@@ -52,6 +74,10 @@ public class Movie implements Comparable<Movie> {
         return description;
     }
 
+
+    public int getLengthInMinutes() {
+        return lengthInMinutes;
+    }
     /**
      * Gets the genres of the movie.
      * @return The genres of the movie.

@@ -15,7 +15,8 @@ import java.util.stream.Collectors;
 
 public class MovieEntity {
 
-
+    @DatabaseField(generatedId = true)
+    private long ID;
     @DatabaseField
         private String ApiID;
 
@@ -44,8 +45,8 @@ public class MovieEntity {
         {
 
         }
-        public MovieEntity(String title, String description, String genres, int releaseYear, String imgURL, int lengthInMinutes, double rating) {
-
+        public MovieEntity(String ApiID,String title, String description, String genres, int releaseYear, String imgURL, int lengthInMinutes, double rating) {
+            this.ApiID = ApiID;
             this.title = title;
             this.description = description;
             this.genres = genres;
@@ -56,6 +57,14 @@ public class MovieEntity {
         }
 
 
+
+        public long getID() {
+        return ID;
+    }
+
+        public void setID(long ID) {
+        this.ID = ID;
+    }
 
         public String getApiID() {
             return ApiID;
@@ -136,6 +145,7 @@ public class MovieEntity {
                     .collect(Collectors.toList());
             return new Movie(title,description, genres,rating,releaseYear, lengthInMinutes);
         }
+
 
 
     }
