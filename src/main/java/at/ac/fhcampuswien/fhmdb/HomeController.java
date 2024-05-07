@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.data.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Rating;
@@ -129,11 +130,11 @@ public class HomeController implements Initializable {
     public MovieAPI movieAPI;
     private Rating selectedRating;
     private Years selectedYear;
-    public HomeController() {
+    public HomeController() throws MovieApiException {
         // Default constructor without parameter
     }
 
-    public HomeController(MovieAPI movieAPI) {
+    public HomeController(MovieAPI movieAPI) throws MovieApiException {
         this.movieAPI = movieAPI;
     }
 
@@ -177,10 +178,14 @@ public class HomeController implements Initializable {
         searchBtn.setOnAction(event -> {
             // Filter movies based on search query and selected genre
             getSearchGenreYearRating();
-            filterMovies();
+            try {
+                filterMovies();
+            } catch (MovieApiException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
-    private void addToWatchlistClicked(Movie movie) {
+    private void addToWatchlistClicked(Movie movie) throws MovieApiException {
         // Code zum Hinzufügen des Films zur Watchlist
         try {
             WatchlistRepository watchlistRepository = new WatchlistRepository();
@@ -206,7 +211,7 @@ public class HomeController implements Initializable {
     }
 
     // Filter the movies based on search query, selected genre, releaseYear and rating(Kommastelle wird ignoriert)
-    public void filterMovies() {
+    public void filterMovies() throws MovieApiException {
         resetMovies();
 
         Predicate<Movie> titleDescriptionPredicate = movie ->

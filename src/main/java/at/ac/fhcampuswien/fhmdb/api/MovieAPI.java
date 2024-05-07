@@ -1,7 +1,9 @@
 package at.ac.fhcampuswien.fhmdb.api;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
+import java.io.IOException;
 
 import okhttp3.*;
 // from JSON to Java Object and back
@@ -20,36 +22,29 @@ public class MovieAPI {
     private static final String BASEURL = "https://prog2.fh-campuswien.ac.at/movies";
 
     // Methode zum Abrufen aller Filme von der API
-    public static List<Movie> getAllMovies() {
+    public static List<Movie> getAllMovies() throws MovieApiException {
         return getMovies(null, null, null, null);
     }
 
-    // Methode zum Abrufen von Filmen mit bestimmten Parametern von der API
-    public static List<Movie> getMovies(String query, Genre genre, String releaseYear, String ratingFrom) {
-        // URL für die API-Anfrage zusammenstellen
+    public static List<Movie> getMovies(String query, Genre genre, String releaseYear, String ratingFrom) throws MovieApiException {
         String url = buildRequestUrl(query, genre, releaseYear, ratingFrom);
-
-        // Anfrageobjekt mit den erforderlichen Header erstellen
         Request request = createRequestWithHeaders(url);
-
-        // HTTP-Client erstellen
         OkHttpClient client = new OkHttpClient();
 
         try (Response response = client.newCall(request).execute()) {
-            // Antwort von der API erhalten
+            if (!response.isSuccessful()) {
+                throw new MovieApiException("Failed to fetch movies: " + response.code());
+            }
+
             String responseBody = response.body().string();
-            // Filme aus der Antwort parsen und zurückgeben
             return parseMoviesFromResponse(responseBody);
-        } catch (Exception e) {
-            // Fehlerbehandlung bei der Anfrage an die API
-            System.err.println("Error fetching movies: " + e.getMessage());
+        } catch (IOException e) {
+            throw new MovieApiException("Error fetching movies: " + e.getMessage(), e);
         }
-        // Im Fehlerfall eine leere Liste von Filmen zurückgeben
-        return new ArrayList<>();
     }
 
     // Methode zum Zusammenstellen der Anfrage-URL mit den Parametern
-    private static String buildRequestUrl(String query, Genre genre, String releaseYear, String ratingFrom) {
+    private static String buildRequestUrl(String query, Genre genre, String releaseYear, String ratingFrom) throws MovieApiException {
         // MovieAPIRequestBuilder verwenden, um die URL zusammenzustellen
         return new MovieAPIRequestBuilder(BASEURL)
                 .appendQuery(query)

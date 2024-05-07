@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import javafx.collections.FXCollections;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HomeControllerTest {
     // Unit tests for filtering movies by genre
     @Test
-    void genre_all_is_correct_filtered(){
+    void genre_all_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.ALL;
@@ -37,7 +38,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_action_is_correct_filtered(){
+    void genre_action_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.ACTION;
@@ -54,7 +55,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_adventure_is_correct_filtered(){
+    void genre_adventure_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.ADVENTURE;
@@ -71,7 +72,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_animation_is_correct_filtered(){
+    void genre_animation_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.ANIMATION;
@@ -88,7 +89,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_biography_is_correct_filtered(){
+    void genre_biography_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.BIOGRAPHY;
@@ -105,7 +106,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_comedy_is_correct_filtered(){
+    void genre_comedy_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.COMEDY;
@@ -122,7 +123,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_crime_is_correct_filtered(){
+    void genre_crime_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.CRIME;
@@ -139,7 +140,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_drama_is_correct_filtered(){
+    void genre_drama_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.DRAMA;
@@ -156,7 +157,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_documentary_is_correct_filtered(){
+    void genre_documentary_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.DOCUMENTARY;
@@ -173,7 +174,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_family_is_correct_filtered(){
+    void genre_family_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.FAMILY;
@@ -190,7 +191,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_fantasy_is_correct_filtered(){
+    void genre_fantasy_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.FANTASY;
@@ -207,7 +208,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_history_is_correct_filtered(){
+    void genre_history_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.HISTORY;
@@ -224,7 +225,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_horror_is_correct_filtered(){
+    void genre_horror_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.HORROR;
@@ -241,7 +242,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_musical_is_correct_filtered(){
+    void genre_musical_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.MUSICAL;
@@ -258,7 +259,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_mystery_is_correct_filtered(){
+    void genre_mystery_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.MYSTERY;
@@ -275,7 +276,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_romance_is_correct_filtered(){
+    void genre_romance_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.ROMANCE;
@@ -292,7 +293,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_science_fiction_is_correct_filtered(){
+    void genre_science_fiction_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.SCIENCE_FICTION;
@@ -309,7 +310,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_sport_is_correct_filtered(){
+    void genre_sport_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.SPORT;
@@ -326,7 +327,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_thriller_is_correct_filtered(){
+    void genre_thriller_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.THRILLER;
@@ -343,7 +344,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_war_is_correct_filtered(){
+    void genre_war_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.WAR;
@@ -360,7 +361,7 @@ class HomeControllerTest {
         }
     }
     @Test
-    void genre_western_is_correct_filtered(){
+    void genre_western_is_correct_filtered() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         Genre genre = Genre.WESTERN;
@@ -378,7 +379,7 @@ class HomeControllerTest {
     }
     // Unit tests for higher lower case
     @Test
-    void higher_to_lower_case_is_working(){
+    void higher_to_lower_case_is_working() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         String query = "Toy Story";
@@ -396,7 +397,7 @@ class HomeControllerTest {
     }
     // Unit tests for filtering movies by title or description
     @Test
-    void search_description_is_working(){
+    void search_description_is_working() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         // Given
         String query = "Toy Story";
@@ -429,7 +430,7 @@ class HomeControllerTest {
     }
 
     @Test
-    void test_reverse_sorting_order() {
+    void test_reverse_sorting_order() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
 
         List<Movie> sortedMovies = Movie.initializeMovies().stream()
@@ -442,7 +443,7 @@ class HomeControllerTest {
         assertEquals(sortedMovies, sortedMoviesAfterSort);
     }
     @Test
-    public void sort_movies_ascending_by_title() {
+    public void sort_movies_ascending_by_title() throws MovieApiException {
         // GIVEN
         HomeController homeController = new HomeController(new MovieAPI());
         Movie movie1 = new Movie("The Dark Knight", "A crime thriller featuring Batman.",
@@ -472,7 +473,7 @@ class HomeControllerTest {
     }
 
     @Test
-    public void sort_movies_descending_by_title() {
+    public void sort_movies_descending_by_title() throws MovieApiException {
         // GIVEN
         HomeController homeController = new HomeController(new MovieAPI());
         Movie movie1 = new Movie("The Dark Knight", "A crime thriller featuring Batman.",
@@ -502,7 +503,7 @@ class HomeControllerTest {
     }
 
     @Test
-    void get_most_popular_actor() {
+    void get_most_popular_actor() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         List<Movie> movies = homeController.movieAPI.getAllMovies();
 
@@ -513,7 +514,7 @@ class HomeControllerTest {
     }
 
     @Test
-    void get_longest_movie_title() {
+    void get_longest_movie_title() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         List<Movie> movies = homeController.movieAPI.getAllMovies();
 
@@ -524,7 +525,7 @@ class HomeControllerTest {
     }
 
     @Test
-    void count_movies_from() {
+    void count_movies_from() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         List<Movie> movies = homeController.movieAPI.getAllMovies();
 
@@ -536,7 +537,7 @@ class HomeControllerTest {
 
 
     @Test
-    void get_movies_between_years() {
+    void get_movies_between_years() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         List<Movie> movies = homeController.movieAPI.getAllMovies();
 

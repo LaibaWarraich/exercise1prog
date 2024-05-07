@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.api;
 
 import at.ac.fhcampuswien.fhmdb.models.Genre;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 
 
 public class MovieAPIRequestBuilder {
@@ -14,7 +15,10 @@ public class MovieAPIRequestBuilder {
     private boolean hasParameters = false;
 
     // Konstruktor, der die Basis-URL initialisiert
-    public MovieAPIRequestBuilder(String baseUrl){
+    public MovieAPIRequestBuilder(String baseUrl) throws MovieApiException {
+        if(baseUrl == null || baseUrl.isEmpty()) {
+            throw new MovieApiException("Base URL cannot be null or empty");
+        }
         urlBuilder = new StringBuilder(baseUrl);
     }
 

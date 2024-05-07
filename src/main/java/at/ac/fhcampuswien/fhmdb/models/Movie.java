@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 
 import java.util.*;
 
@@ -26,29 +27,38 @@ public class Movie implements Comparable<Movie> {
      * @param description The description of the movie.
      * @param genres The genres of the movie.
      */
-    public Movie(String title, String description, List<Genre> genres, double rating, int releaseYear, int lengthInMinutes) {
-        this.id = UUID.randomUUID().toString();
-        this.title = title;
-        this.description = description;
-        this.genres = genres;
-        this.rating = rating;
-        this.releaseYear = releaseYear;
-        this.imgUrl = "";
-        this.lengthInMinutes = lengthInMinutes;
-    }
-    public Movie(String id, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
-        if(id == null) {
+    public Movie(String title, String description, List<Genre> genres, double rating, int releaseYear, int lengthInMinutes) throws MovieApiException {
+        try {
             this.id = UUID.randomUUID().toString();
-        } else {
-            this.id = id;
+            this.title = title;
+            this.description = description;
+            this.genres = genres;
+            this.rating = rating;
+            this.releaseYear = releaseYear;
+            this.imgUrl = "";
+            this.lengthInMinutes = lengthInMinutes;
+        } catch (Exception e) {
+            throw new MovieApiException("Error creating Movie object", e);
         }
-        this.title = title;
-        this.description = description;
-        this.genres = genres;
-        this.releaseYear = releaseYear;
-        this.imgUrl = imgUrl;
-        this.lengthInMinutes = lengthInMinutes;
-        this.rating = rating;
+    }
+
+    public Movie(String id, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) throws MovieApiException {
+        try {
+            if(id == null) {
+                this.id = UUID.randomUUID().toString();
+            } else {
+                this.id = id;
+            }
+            this.title = title;
+            this.description = description;
+            this.genres = genres;
+            this.releaseYear = releaseYear;
+            this.imgUrl = imgUrl;
+            this.lengthInMinutes = lengthInMinutes;
+            this.rating = rating;
+        } catch (Exception e) {
+            throw new MovieApiException("Error creating Movie object", e);
+        }
     }
 
     public String getId() {
@@ -141,7 +151,7 @@ public class Movie implements Comparable<Movie> {
      * Initializes a list of predefined movies.
      * @return The list of initialized movies.
      */
-    public static List<Movie> initializeMovies() {
+    public static List<Movie> initializeMovies() throws MovieApiException {
         return MovieAPI.getAllMovies();
     }
 
