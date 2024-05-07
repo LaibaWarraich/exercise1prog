@@ -416,14 +416,14 @@ class HomeControllerTest {
     // Unit tests for sorting movies
 
     @Test
-    void test_movie_sorting_empty_list() {
+    void test_movie_sorting_empty_list() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         List<Movie> emptyList = new ArrayList<>();
         assertDoesNotThrow(() -> homeController.sortMovies(emptyList, false));
     }
 
     @Test
-    void test_movie_sorting_null_list() {
+    void test_movie_sorting_null_list() throws MovieApiException {
         HomeController homeController = new HomeController(new MovieAPI());
         homeController.observableMovies = null;
         assertThrows(NullPointerException.class, () -> homeController.sortMovies(null, false));

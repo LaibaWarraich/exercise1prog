@@ -37,7 +37,11 @@ public class MovieCell extends ListCell<Movie> {
         addToWatchlistBtn.setOnAction(event -> {
             Movie movie = getItem();
             if (movie != null) {
-                addToWatchlistClicked.onClick(movie);
+                try {
+                    addToWatchlistClicked.onClick(movie);
+                } catch (MovieApiException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
