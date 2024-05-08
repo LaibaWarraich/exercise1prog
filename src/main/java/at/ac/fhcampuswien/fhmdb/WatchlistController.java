@@ -76,16 +76,15 @@ public class WatchlistController {
         movieWatchlistView.setCellFactory(movieListView -> new MovieCell(true, onAddToWatchlistClicked));
     }
 
-
     @FXML
-    public void loadHomeView() {
+    public void loadHomeView() throws MovieApiException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("home-view.fxml"));
         try {
             Scene scene = new Scene(fxmlLoader.load(), 890, 620);
             Stage stage = (Stage) mainPane.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
-            MovieCell.showExceptionDialog(new IllegalArgumentException("Error while loading"));
+            throw new MovieApiException("Error while loading FXML", e);
         }
     }
 
