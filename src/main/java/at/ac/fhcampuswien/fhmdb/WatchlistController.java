@@ -57,14 +57,8 @@ public class WatchlistController {
         }
     };
     @FXML
-    private void initialize() {
-        List<MovieEntity> watchlist = new ArrayList<>();
-
-        try {
-            watchlist = repository.getAll();
-        } catch (SQLException e) {
-            MovieCell.showExceptionDialog(new DatabaseException("Database problem"));
-        }
+    public void initialize() {
+        List<MovieEntity> watchlist = repository.getAll();
 
         ObservableList<Movie> movies = FXCollections.observableArrayList(
                 watchlist.stream()
@@ -82,13 +76,14 @@ public class WatchlistController {
         movieWatchlistView.setCellFactory(movieListView -> new MovieCell(true, onAddToWatchlistClicked));
     }
 
-    public void loadHomeView() {
-        FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("home-view.fxml"));
-        try{
-            Scene scene = new Scene(fxmlLoader.load(), 890, 620);
-            Stage stage = (Stage)mainPane.getScene().getWindow();
-            stage.setScene(scene);
 
+    @FXML
+    public void loadHomeView() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("home-view.fxml"));
+        try {
+            Scene scene = new Scene(fxmlLoader.load(), 890, 620);
+            Stage stage = (Stage) mainPane.getScene().getWindow();
+            stage.setScene(scene);
         } catch (IOException e) {
             MovieCell.showExceptionDialog(new IllegalArgumentException("Error while loading"));
         }

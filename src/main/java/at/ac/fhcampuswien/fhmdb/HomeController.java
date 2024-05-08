@@ -52,7 +52,7 @@ public class HomeController implements Initializable {
     @FXML
     public VBox mainPane;
 
-    public JFXComboBox<Years> YearComboBox;
+    public JFXComboBox<Years> yearComboBox;
     public JFXComboBox<Rating> RatingComboBox;
 
     private List<Movie> allMovies = Movie.initializeMovies();
@@ -124,8 +124,8 @@ public class HomeController implements Initializable {
         genreComboBox.setPromptText("Filter by Genre");
 
         List<Years> years = new ArrayList<>(Arrays.asList(Years.values()));
-        YearComboBox.getItems().addAll(years);
-        YearComboBox.setPromptText("Filter by Release Year");
+        yearComboBox.getItems().addAll(years);
+        yearComboBox.setPromptText("Filter by Release Year");
 
         List<Rating> rating = new ArrayList<>(Arrays.asList(Rating.values()));
         RatingComboBox.getItems().addAll(rating);
@@ -163,6 +163,15 @@ public class HomeController implements Initializable {
             }
         }
     };
+    public void addToWatchlist(Movie movie) {
+        try {
+            repository.addToWatchlist(movie);
+        } catch (SQLException e) {
+            MovieCell.showExceptionDialog(new DatabaseException("Error by adding to watchlist"));
+        } catch (MovieApiException e) {
+            MovieCell.showExceptionDialog(new DatabaseException("Error by adding to watchlist"));
+        }
+    }
 
     // Reset the movies in the list view to the original list
     private void resetMovies() {
@@ -174,7 +183,7 @@ public class HomeController implements Initializable {
     private void getSearchGenreYearRating() {
         query = searchField.getText().toLowerCase();
         selectedGenre = genreComboBox.getValue();
-        selectedYear = YearComboBox.getValue();
+        selectedYear = yearComboBox.getValue();
         selectedRating = RatingComboBox.getValue();
     }
 
@@ -258,14 +267,16 @@ public class HomeController implements Initializable {
                 .collect(Collectors.toList());
     }
     public void loadWatchlistView() {
-        FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("watchlist-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("watchlist-view.fxml"));
         try {
-            Scene scene = new Scene(fxmlLoader.load(), 890, 620);
-            Stage stage = (Stage)mainPane.getScene().getWindow();
+            Parent root = fxmlLoader.load();
+            WatchlistController controller = fxmlLoader.getController();
+            controller.initialize();
+            Scene scene = new Scene(root, 890, 620);
+            Stage stage = (Stage) mainPane.getScene().getWindow();
             stage.setScene(scene);
-
-        } catch (IOException ioe) {
-            MovieCell.showExceptionDialog(new IllegalArgumentException("Watchlist cannot be loaded"));
+        } catch (IOException e) {
+            MovieCell.showExceptionDialog(new IllegalArgumentException("Error while loading"));
         }
     }
 }

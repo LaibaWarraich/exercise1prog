@@ -16,35 +16,38 @@ public class DatabaseManager {
 
     private static ConnectionSource connectionSource;
 
-    private Dao<MovieEntity, Long> dao;
+    private Dao<MovieEntity, Long> movieDao;
+    private Dao<WatchlistMovieEntity, Long> watchlistMovieDao;
 
     private static DatabaseManager instance;
 
     private DatabaseManager() {
         try {
             createConnectionSource();
-            dao = DaoManager.createDao(connectionSource, MovieEntity.class);
+            movieDao = DaoManager.createDao(connectionSource, MovieEntity.class);
+            watchlistMovieDao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
             createTables();
         } catch (SQLException e) {
             //MovieCell.showExceptionDialog(new DatabaseException("Database problem"));
         }
     }
-    public static DatabaseManager getInstance()
-    {
-        if(instance == null)
-        {
+
+    public static DatabaseManager getInstance() {
+        if(instance == null) {
             instance = new DatabaseManager();
         }
         return instance;
     }
 
-    public Dao<MovieEntity, Long> getDao()
-    {
-        return dao;
+    public Dao<MovieEntity, Long> getMovieDao() {
+        return movieDao;
     }
 
-    public  ConnectionSource getConnectionSource()
-    {
+    public Dao<WatchlistMovieEntity, Long> getWatchlistMovieDao() {
+        return watchlistMovieDao;
+    }
+
+    public  ConnectionSource getConnectionSource() {
         return connectionSource;
     }
 
@@ -54,6 +57,11 @@ public class DatabaseManager {
 
     private void createTables() throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, MovieEntity.class);
+        TableUtils.createTableIfNotExists(connectionSource, WatchlistMovieEntity.class);
     }
 
+    public Dao<MovieEntity, Long> getDao() {
+        return null;
+    }
 }
+

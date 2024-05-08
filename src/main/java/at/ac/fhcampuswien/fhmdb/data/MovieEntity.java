@@ -22,25 +22,25 @@ public class MovieEntity {
         private String ApiID;
 
       @DatabaseField
-        private static String title;
+        private String title;
 
       @DatabaseField
-        private static String description;
+        private String description;
 
      @DatabaseField
         private String genres;
 
      @DatabaseField
-        private static int releaseYear;
+        private int releaseYear;
 
       @DatabaseField
         private String imgURL;
 
       @DatabaseField
-        private static int lengthInMinutes;
+        private int lengthInMinutes;
 
      @DatabaseField
-        private static double rating;
+        private double rating;
 
         public MovieEntity(Movie m)
         {

@@ -20,6 +20,7 @@ public class Movie implements Comparable<Movie> {
     private final List<String> mainCast = new ArrayList<>();
     private final int releaseYear;;
     private final int lengthInMinutes;
+    private String apiID;
 
     /**
      * Constructs a Movie object with the given title, description, and genres.
@@ -170,5 +171,12 @@ public class Movie implements Comparable<Movie> {
 
     public double getRating() {
         return rating;
+    }
+    public String getApiID() {
+        return apiID;
+    }
+
+    public void setApiID(String apiID) {
+        this.apiID = apiID;
     }
 }
