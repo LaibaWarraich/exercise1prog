@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.data;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.field.DatabaseField;
 
@@ -32,7 +33,8 @@ public class WatchlistMovieEntity extends MovieEntity{
     private double rating;
 
 
-    public WatchlistMovieEntity(String ApiID,String title, String description, String genres, int releaseYear, String imgURL, int lengthInMinutes, double rating) {
+    public WatchlistMovieEntity(Movie m) {
+        super(m);
         this.ApiID = ApiID;
         this.title = title;
         this.description = description;
@@ -42,12 +44,14 @@ public class WatchlistMovieEntity extends MovieEntity{
         this.lengthInMinutes = lengthInMinutes;
         this.rating = rating;
     }
-    public long getID() {
-        return ID;
+
+    public WatchlistMovieEntity(WatchlistMovieEntity movie) throws MovieApiException {
+        super(movie.toMovie());
     }
 
-    public void setID(long ID) {
+    public String setID() {
         this.ID = ID;
+        return null;
     }
 
     public String getApiID() {
@@ -113,6 +117,4 @@ public class WatchlistMovieEntity extends MovieEntity{
     public void setRating(double rating) {
         this.rating = rating;
     }
-
-
 }

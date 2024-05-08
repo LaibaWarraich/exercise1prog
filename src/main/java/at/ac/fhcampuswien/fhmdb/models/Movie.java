@@ -61,7 +61,7 @@ public class Movie implements Comparable<Movie> {
         }
     }
 
-    public String getId() {
+    public String setID() {
         return id;
     }
     /**

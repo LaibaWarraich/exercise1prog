@@ -6,6 +6,7 @@ import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class MovieEntity {
      @DatabaseField
         private static double rating;
 
-        public MovieEntity()
+        public MovieEntity(Movie m)
         {
 
         }
@@ -57,14 +58,10 @@ public class MovieEntity {
         }
 
 
-
-        public long getID() {
-        return ID;
-    }
-
-        public void setID(long ID) {
-        this.ID = ID;
-    }
+        public String setID() {
+            this.ID = ID;
+            return null;
+        }
 
         public String getApiID() {
             return ApiID;
@@ -138,6 +135,12 @@ public class MovieEntity {
             }
             return result;
         }
+    public static List<MovieEntity> fromMovies(List<Movie> movies) {
+        List<MovieEntity> movieEntities = new ArrayList<>();
+        for (Movie m : movies) movieEntities.add(new MovieEntity(m));
+
+        return movieEntities;
+    }
 
         public Movie toMovie() throws MovieApiException {
             List<Genre> genres = Arrays.stream(this.genres.split(","))
