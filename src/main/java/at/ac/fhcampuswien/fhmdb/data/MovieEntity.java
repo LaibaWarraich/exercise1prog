@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.data;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.field.DatabaseField;
@@ -20,25 +21,25 @@ public class MovieEntity {
         private String ApiID;
 
       @DatabaseField
-        private String title;
+        private static String title;
 
       @DatabaseField
-        private String description;
+        private static String description;
 
      @DatabaseField
         private String genres;
 
      @DatabaseField
-        private int releaseYear;
+        private static int releaseYear;
 
       @DatabaseField
         private String imgURL;
 
       @DatabaseField
-        private int lengthInMinutes;
+        private static int lengthInMinutes;
 
      @DatabaseField
-        private double rating;
+        private static double rating;
 
         public MovieEntity()
         {
@@ -138,11 +139,11 @@ public class MovieEntity {
             return result;
         }
 
-        public Movie toMovie() {
+        public Movie toMovie() throws MovieApiException {
             List<Genre> genres = Arrays.stream(this.genres.split(","))
                     .map(Genre::valueOf)
                     .collect(Collectors.toList());
-            return new Movie(title,description, genres,rating,releaseYear, lengthInMinutes);
+            return new Movie(ApiID, title, description, genres, releaseYear, imgURL, lengthInMinutes, rating);
         }
 
 

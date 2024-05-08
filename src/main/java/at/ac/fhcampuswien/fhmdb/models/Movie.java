@@ -161,6 +161,9 @@ public class Movie implements Comparable<Movie> {
     public List<String> getDirector() {
         return directors;
     }
+    public List<String> getWriters() {
+        return writers;
+    }
     public int getReleaseYear() {
         return releaseYear;
     }

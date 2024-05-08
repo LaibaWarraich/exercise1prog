@@ -1,21 +1,100 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.data.MovieEntity;
+import at.ac.fhcampuswien.fhmdb.data.WatchlistMovieEntity;
+import at.ac.fhcampuswien.fhmdb.data.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
+import at.ac.fhcampuswien.fhmdb.interfaces.ClickEventHandler;
+import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
+import com.jfoenix.controls.JFXListView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class WatchlistController {
     @FXML
-    private ListView<String> watchlistListView;
+    public JFXListView movieWatchlistView;
+    @FXML
+    public VBox mainPane;
+    private WatchlistRepository repository = new WatchlistRepository();
 
+    private final ClickEventHandler onAddToWatchlistClicked = (clickedItem, isWatchlistCell, addToWatchlistBtn) -> {
+        if (isWatchlistCell) {
+            try {
+                repository.removeFromWatchlist((Movie)clickedItem);
+                FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("watchlist-view.fxml"));
+                Parent root = FXMLLoader.load(fxmlLoader.getLocation());
+                Scene scene = addToWatchlistBtn.getScene();
+                scene.setRoot(root);
+            } catch (SQLException e) {
+                MovieCell.showExceptionDialog(new DatabaseException("Error by deleting movies"));
+            } catch (IOException e) {
+                MovieCell.showExceptionDialog(new IllegalArgumentException("Fxml cannot be loaded"));
+            }
+        } else {
+            try {
+                repository.addToWatchlist((Movie)clickedItem);
+            } catch (SQLException e) {
+                MovieCell.showExceptionDialog(new DatabaseException("Error by adding to watchlist"));
+            }
+        }
+    };
     @FXML
     private void initialize() {
-        // Hier kannst du Initialisierungen vornehmen, z.B. die Watchlist aus der Datenbank laden
+        List<MovieEntity> watchlist = new ArrayList<>();
+
+        try {
+            watchlist = repository.getAll();
+        } catch (SQLException e) {
+            MovieCell.showExceptionDialog(new DatabaseException("Database problem"));
+        }
+
+        ObservableList<Movie> movies = FXCollections.observableArrayList(
+                watchlist.stream()
+                        .map(movieEntity -> {
+                            try {
+                                return movieEntity.toMovie();
+                            } catch (MovieApiException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                        .collect(Collectors.toList())
+        );
+
+        movieWatchlistView.setItems(movies);
+        movieWatchlistView.setCellFactory(movieListView -> new MovieCell(true, onAddToWatchlistClicked));
     }
 
-    @FXML
+    public void loadHomeView() {
+        FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("home-view.fxml"));
+        try{
+            Scene scene = new Scene(fxmlLoader.load(), 890, 620);
+            Stage stage = (Stage)mainPane.getScene().getWindow();
+            stage.setScene(scene);
+
+        } catch (IOException e) {
+            MovieCell.showExceptionDialog(new IllegalArgumentException("Error while loading"));
+        }
+    }
+
+    /*@FXML
     private void removeFromWatchlist() {
         String selectedItem = watchlistListView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
@@ -52,5 +131,6 @@ public class WatchlistController {
             alert.setContentText("Please select a movie to add to the watchlist.");
             alert.showAndWait();
         }
-    }
+    }*/
+
 }

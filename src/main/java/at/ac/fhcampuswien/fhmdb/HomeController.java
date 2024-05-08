@@ -2,7 +2,9 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.data.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
+import at.ac.fhcampuswien.fhmdb.interfaces.ClickEventHandler;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Rating;
@@ -19,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -47,56 +50,8 @@ public class HomeController implements Initializable {
     @FXML
     public JFXButton sortBtn;
     @FXML
-    private VBox menuPane;
+    public VBox mainPane;
 
-    private boolean menuVisible = false; // Flag, um den Status des Menüs zu verfolgen
-
-    @FXML
-    private void toggleMenu() {
-        if (menuVisible) {
-            menuPane.setVisible(false);
-            BorderPane.setMargin(menuPane, null); // Rand entfernen
-        } else {
-            menuPane.setVisible(true);
-            BorderPane.setMargin(menuPane, new Insets(0, 10, 0, 0)); // Rand hinzufügen
-        }
-        menuVisible = !menuVisible; // Menüstatus umkehren
-    }
-
-    @FXML
-    private void showHome() {
-        menuPane.setVisible(false);
-        menuPane.setVisible(false);
-
-        searchField.clear();
-
-        genreComboBox.getSelectionModel().clearSelection();
-        YearComboBox.getSelectionModel().clearSelection();
-        RatingComboBox.getSelectionModel().clearSelection();
-
-        observableMovies.setAll(getAllMovies());
-
-        sortBtn.setText("Sort (asc)");
-        if (menuVisible) {
-            toggleMenu();
-        }
-    }
-    @FXML
-    public void showWatchlist() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("watchlist-view.fxml"));
-            Parent root = fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Watchlist");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (menuVisible) {
-            toggleMenu();
-        }
-    }
     public JFXComboBox<Years> YearComboBox;
     public JFXComboBox<Rating> RatingComboBox;
 
@@ -130,6 +85,8 @@ public class HomeController implements Initializable {
     public MovieAPI movieAPI;
     private Rating selectedRating;
     private Years selectedYear;
+    private WatchlistRepository repository = new WatchlistRepository();
+
     public HomeController() throws MovieApiException {
         // Default constructor without parameter
     }
@@ -144,8 +101,8 @@ public class HomeController implements Initializable {
         // Populate the movie list view with initial data
 
         observableMovies.addAll(getAllMovies());
-        movieListView.setItems(observableMovies);
-        movieListView.setCellFactory(movieListView -> new MovieCell(this::addToWatchlistClicked));
+        movieListView.setItems(observableMovies);   // set the items of the listview to the observable list
+        movieListView.setCellFactory(movieListView -> new MovieCell(false, onAddToWatchlistClicked));
 
         // Set action for the sort button
         if (sortBtn != null) {
@@ -185,16 +142,27 @@ public class HomeController implements Initializable {
             }
         });
     }
-    private void addToWatchlistClicked(Movie movie) throws MovieApiException {
-        // Code zum Hinzufügen des Films zur Watchlist
-        try {
-            WatchlistRepository watchlistRepository = new WatchlistRepository();
-            watchlistRepository.addToWatchlist(movie);
-            System.out.println("Added " + movie.getTitle() + " to Watchlist");
-        } catch (SQLException e) {
-            e.printStackTrace();
+    private final ClickEventHandler onAddToWatchlistClicked = (clickedItem, isWatchlistCell, addToWatchlistBtn) -> {
+        if (isWatchlistCell) {
+            try {
+                repository.removeFromWatchlist((Movie)clickedItem);
+                FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("watchlist-view.fxml"));
+                Parent root = FXMLLoader.load(fxmlLoader.getLocation());
+                Scene scene = addToWatchlistBtn.getScene();
+                scene.setRoot(root);
+            } catch (SQLException e) {
+                MovieCell.showExceptionDialog(new DatabaseException("Error by deleting movies"));
+            } catch (IOException e) {
+                MovieCell.showExceptionDialog(new IllegalArgumentException("Fxml cannot be loaded"));
+            }
+        } else {
+            try {
+                repository.addToWatchlist((Movie)clickedItem);
+            } catch (SQLException e) {
+                MovieCell.showExceptionDialog(new DatabaseException("Error by adding to watchlist"));
+            }
         }
-    }
+    };
 
     // Reset the movies in the list view to the original list
     private void resetMovies() {
@@ -288,5 +256,16 @@ public class HomeController implements Initializable {
         return movies.stream()
                 .filter(movie -> movie.getReleaseYear() >= startYear && movie.getReleaseYear() <= endYear)
                 .collect(Collectors.toList());
+    }
+    public void loadWatchlistView() {
+        FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("watchlist-view.fxml"));
+        try {
+            Scene scene = new Scene(fxmlLoader.load(), 890, 620);
+            Stage stage = (Stage)mainPane.getScene().getWindow();
+            stage.setScene(scene);
+
+        } catch (IOException ioe) {
+            MovieCell.showExceptionDialog(new IllegalArgumentException("Watchlist cannot be loaded"));
+        }
     }
 }

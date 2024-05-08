@@ -27,6 +27,15 @@ public class WatchlistRepository {
         }
     }
 
+    public void removeFromWatchlist(Movie movie) throws SQLException {
+        String title = movie.getTitle().replace("'", "''");
+        List<MovieEntity> movies = dao.queryForEq("title", title);
+        if (!movies.isEmpty()) {
+            dao.delete(movies);
+            System.out.println("Deleted " + movie.getTitle() + " from Watchlist");
+        }
+    }
+
 
 
 
@@ -44,8 +53,7 @@ public class WatchlistRepository {
     */
 
 
-    private WatchlistMovieEntity movieToEntity(Movie movie)
-    {
+    private WatchlistMovieEntity movieToEntity(Movie movie) {
         return new WatchlistMovieEntity(movie.getId(), movie.getTitle(), movie.getDescription(), MovieEntity.genresToString(movie.getGenres()), movie.getReleaseYear(), movie.getImgUrl(), movie.getLengthInMinutes(), movie.getRating());
     }
 
@@ -53,13 +61,6 @@ public class WatchlistRepository {
 
 
 
-    public void removeFromWatchlist(Movie movie) throws SQLException {
-        String title = movie.getTitle().replace("'", "''");
-        List<MovieEntity> movies = dao.queryForEq("title", title);
-        if (!movies.isEmpty()) {
-            dao.delete(movies);
-            System.out.println("Deleted " + movie.getTitle() + " from Watchlist");
-        }
-    }
+
 
 }
